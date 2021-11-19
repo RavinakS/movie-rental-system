@@ -5,8 +5,8 @@ const Model = db.model;
 
 //users information table
 const usersTableSchema = new Schema({
-    email: {type: String},
     name: {type: String},
+    email: {type: String},
     password: {type: String},
     role: {type: String},
     rent: {type: Number}
