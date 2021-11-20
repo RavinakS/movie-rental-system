@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 app.use(express.json())
 
+console.log("Hii");
+
 const users = require('./routes/users');
 app.use('/', users);
 
