@@ -1,6 +1,6 @@
 const db = require('./dbConnection');
 
-const Schema = db.schema;
+const Schema = db.Schema;
 const Model = db.model;
 
 //users information table
@@ -10,7 +10,7 @@ const usersTableSchema = new Schema({
     password: {type: String},
     role: {type: String},
     rent: {type: Number}
-})
+});
 
 // movies table
 const moviesTableSchema = new Schema({

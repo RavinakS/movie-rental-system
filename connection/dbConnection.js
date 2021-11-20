@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const connectToCluster = process.env.clusterUrl;
+const connectToCluster = process.env.CLUSTER_CONNECTION;
 
 mongoose.connect(
     connectToCluster,
-    {useNewUrlParser: true, useUnifinedTopology: true}
+    {useNewUrlParser: true, useUnifiedTopology: true}
 ).then((res)=>{
     console.log("Connected to DB..");
 }).catch((err)=>{

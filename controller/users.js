@@ -10,9 +10,9 @@ const signUp = async (req, res) =>{
         rent: req.body.rent
     }
     
-    let {err} = userValidation.validate(userInfo);
-    if(err){
-        return res.send(err);
+    let {error} = userValidation.validate(userInfo);
+    if(error){
+        return res.send(error.details[0].message);
     }
 
     try{
