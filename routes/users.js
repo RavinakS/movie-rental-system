@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const createAccount = users.signUp;
-router.post('/create-account', createAccount);
+const hashPassword = require('../controller/middlewares/password').hashPass;
+router.post('/create-account', hashPassword, createAccount);
 
 module.exports = router;

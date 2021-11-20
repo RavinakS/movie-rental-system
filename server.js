@@ -4,11 +4,9 @@ const express = require('express');
 const app = express();
 app.use(express.json())
 
-console.log("Hii");
-
 const users = require('./routes/users');
 app.use('/', users);
 
-app.listen(3040, (req, res)=>{
+app.listen(3050, (req, res)=>{
     console.log("Server is on..");
 })

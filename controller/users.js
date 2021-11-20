@@ -1,6 +1,7 @@
 const userValidation = require('./middlewares/schemaValidation').userValidation;
 const users = require('../modal/users');
 
+
 const signUp = async (req, res) =>{
     let userInfo = {
         name: req.body.name,
@@ -16,6 +17,7 @@ const signUp = async (req, res) =>{
     }
 
     try{
+        userInfo["password"] = req.hashPass;
         signUpStatus = await users.signUp(userInfo);
         res.send('Account is Successfully created.');
     }catch(err){

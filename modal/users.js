@@ -4,4 +4,8 @@ const signUp = (userData) =>{
     return users.create(userData);
 }
 
-module.exports = {signUp};
+const userDetailsById = (user_id) =>{
+    return users.find({email: user_id}, {password:1});
+}
+
+module.exports = {signUp, userDetailsById};
