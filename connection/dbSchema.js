@@ -6,10 +6,10 @@ const Model = db.model;
 //users information table
 const usersTableSchema = new Schema({
     name: {type: String},
-    email: {type: String},
+    email: {type: String, unique: true, dropDups: true},
     password: {type: String},
-    role: {type: String},
-    rent: {type: Number}
+    role: {type: String, default: 'Viewer'},
+    rent: {type: Number, default: 0}
 });
 
 // movies table
