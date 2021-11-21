@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const userDetailsById = require('../../modal/users').userDetailsById;
+const userDetailsById = require('../../model/users').userDetailsById;
 
 const hashPass = async (req, res, next) =>{
     try{
@@ -18,8 +18,9 @@ const hashPass = async (req, res, next) =>{
 const comparePass = async (req, res, next) =>{
     try{
         dbPassword = await userDetailsById(req.body.email);
+        console.log(dbPassword);
         isPasswordValid = await bcrypt.compare(req.body.password, dbPassword)
-        req.isPasswordValid = isPasswordValid;
+        req.validPassword = isPasswordValid;
         next();
     }catch(err){
         res.send(err);

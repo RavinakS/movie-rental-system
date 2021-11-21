@@ -5,7 +5,7 @@ const signUp = (userData) =>{
 }
 
 const userDetailsById = (user_id) =>{
-    return users.find({email: user_id}, {password:1});
+    return users.find({email: user_id}, {role:1, rent:1});
 }
 
 module.exports = {signUp, userDetailsById};

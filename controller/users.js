@@ -1,5 +1,7 @@
 const userValidation = require('./middlewares/schemaValidation').userValidation;
-const users = require('../modal/users');
+const users = require('../model/users');
+const token = require('./middlewares/token');
+const dataById = require('../model/users').userDetailsById;
 
 
 const signUp = async (req, res) =>{
@@ -19,6 +21,14 @@ const signUp = async (req, res) =>{
     try{
         userInfo["password"] = req.hashPass;
         signUpStatus = await users.signUp(userInfo);
+
+        userData = {
+            role: userInfo.role,
+            rent: userInfo.rent
+        }
+        createdToken = await token.createToken(userData);
+        req.token = createdToken;
+
         res.send('Account is Successfully created.');
         
     }catch(err){
@@ -31,4 +41,19 @@ const signUp = async (req, res) =>{
     }
 }
 
-module.exports = {signUp};
+const login = async (req, res)=>{
+    try{
+        if(req.validPassword){
+            userData = await dataById(req.email);
+            createdToken = await token.createToken(userData);
+            req.token = createdToken;
+            res.send("Logged is SuccessFully")
+        }
+    }catch(err){
+        console.log(err);
+        res.send(err);
+    }
+    
+}
+
+module.exports = {signUp, login};
