@@ -14,7 +14,7 @@ const usersTableSchema = new Schema({
 
 // movies table
 const moviesTableSchema = new Schema({
-    name: {type: String},
+    name: {type: String, unique: true, dropDups: true},
     releasDate: {type: Date},
     genre: {type: String},
     avalCD: {type: Number}

@@ -17,13 +17,14 @@ const hashPass = async (req, res, next) =>{
 
 const comparePass = async (req, res, next) =>{
     try{
-        dbPassword = await userDetailsById(req.body.email);
-        console.log(dbPassword);
-        isPasswordValid = await bcrypt.compare(req.body.password, dbPassword)
+        userInfo = await userDetailsById(req.body.email);
+        dbPassword = userInfo[0].password;
+        isPasswordValid = await bcrypt.compare(req.body.password, dbPassword);
         req.validPassword = isPasswordValid;
         next();
     }catch(err){
-        res.send(err);
+        req.validPassword = 'noUser';
+        res.send({status: "User not exist.", message: "Create Account (signUp)"});
         next();
     }
 }

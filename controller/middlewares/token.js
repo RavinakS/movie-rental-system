@@ -11,8 +11,13 @@ const createToken = async (data) =>{
     }
 }
 
-const verifyToken = async () =>{
-
+const verifyToken = async (token) =>{
+    try{
+        userData = await jwt.verify(token, key);
+        return userData;
+    }catch(err){
+        return "err";
+    }
 }
 
-module.exports = {createToken};
+module.exports = {createToken, verifyToken};
