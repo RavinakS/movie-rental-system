@@ -1,6 +1,7 @@
 const moviesTable = require('../model/movies');
 const usersTable = require('../model/users');
-// const userToken = require('./middlewares/token');
+// const rentsTable = require('../model/rents');
+const userToken = require('./middlewares/token');
 const movieValidations = require('./middlewares/schemaValidation').movieValidation;
 
 // Home Page
@@ -25,13 +26,13 @@ const searchMovieByGenre = async (req, res) =>{
 
 // search movie by release date
 const filterByReleaseDate = async (req, res) =>{
-    const r_date = req.body.releasDate;
+    let r_date = req.body.releasDate;
     if(r_date === undefined){
         return res.send("Please provide release date you wanna search.")
     }
 
     try{
-        const movies = await moviesTable.filterByReleaseDate(r_date);
+        let movies = await moviesTable.filterByReleaseDate(r_date);
         if(movies.length === 0){
             return res.send("Couldn't Find.");
         }
@@ -51,7 +52,8 @@ const allMovies = async (req, res) =>{
 
 // Buy a movie
 const buyMovie = async (req, res) =>{
-    const movieName = req.body.name;
+    let movieName = req.body.name;
+    let user = req.email;
     if(movieName === undefined){
         return res.send("Please provide the movie name.");
     }
@@ -59,7 +61,7 @@ const buyMovie = async (req, res) =>{
     try{
 
         // is movie available
-        const availableRents = await moviesTable.searchMovieByName(movieName);
+        let availableRents = await moviesTable.avalRentsMovieByName(movieName);
         if(availableRents === null){
             return res.send("Could not find the movie.");
         }
@@ -76,9 +78,15 @@ const buyMovie = async (req, res) =>{
             // if yes? update the rent field of the user to +1
             user_id = userInfo.email;
             total_rents = userInfo.rent + 1;
-            updateUserRentStatus = await usersTable.updateUserRent(user_id, total_rents); 
-            res.send("Congratulations!! Enjoy your movie.");
+            if(!req.isMovieExist){
+                updateUserRentStatus = await usersTable.updateUserRent(user_id, total_rents);
+                return res.send("Congratulations!! Enjoy your movie.");
+            }
+            return res.send("You Already have this movie, check your rents.")  
         }
+
+        console.log(availableRents);
+        res.send("Oops! Currently this movie is not available for rents.");
     }catch(err){
         console.log(err);
         res.send(err);

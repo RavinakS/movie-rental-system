@@ -16,12 +16,16 @@ const filterByReleaseDate = (date) =>{
     return movieTable.find({releasDate: date});
 }
 
-const searchMovieByName = (m_name) =>{
+const avalRentsMovieByName = (m_name) =>{
     return movieTable.findOne({name: m_name}, {avalCD:1});
+}
+
+const getMovieByName = (m_name) =>{
+    return movieTable.findOne({name: m_name});
 }
 
 const updateMovie = (m_name, m_details) =>{
     return movieTable.update({name: m_name}, {$set: m_details});
 }
 
-module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, searchMovieByName, updateMovie};
+module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, avalRentsMovieByName, updateMovie, getMovieByName};
