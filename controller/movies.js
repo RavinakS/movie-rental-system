@@ -1,8 +1,10 @@
 const moviesTable = require('../model/movies');
+const usersTable = require('../model/users');
 const userToken = require('./middlewares/token');
 const movieValidations = require('./middlewares/schemaValidation').movieValidation;
 
 // Home Page
+// Search movie by a genre
 const searchMovieByGenre = async (req, res) =>{
     genre = req.params.genre;
     if(genre === undefined){
@@ -21,6 +23,7 @@ const searchMovieByGenre = async (req, res) =>{
     }
 }
 
+// search movie by release date
 const filterByReleaseDate = async (req, res) =>{
     const r_date = req.body.releasDate;
     if(r_date === undefined){
@@ -39,6 +42,8 @@ const filterByReleaseDate = async (req, res) =>{
     }
 } 
 
+
+// Show all movies.
 const allMovies = async (req, res) =>{
     movies = await moviesTable.allMovies();
     res.send(movies);
@@ -52,8 +57,31 @@ const buyMovie = async (req, res) =>{
     }
 
     try{
+
+        // is movie available
         const availableRents = await moviesTable.searchMovieByName(movieName);
+        if(availableRents === null){
+            return res.send("Could not find the movie.");
+        }
         
+        // if yes? is it available for rent
+        if(availableRents.avalCD > 0){
+            token = req.headers.cookie.split("=")[1];
+            userInfo = await userToken.verifyToken(token);
+            if(userInfo === 'err'){
+                console.log('Token error');
+                return res.send({error: "Sorry! something is worng in our side", message:"we will get back to you soon."})
+            }
+
+            // if yes? update the rent field of the user to +1
+            user_id = userInfo.email;
+            total_rents = userInfo.rent + 1;
+            updateUserRentStatus = await usersTable.updateUserRent(user_id, total_rents); 
+            res.send("Congratulations!! Enjoy your movie.");
+        }
+    }catch(err){
+        console.log(err);
+        res.send(err);
     }
 
 }
@@ -108,4 +136,8 @@ const addMovie = async (req, res) =>{
 
 }
 
-module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate};
+const updateMovie = (req, res) =>{
+    
+}
+
+module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, buyMovie};

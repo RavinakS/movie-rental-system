@@ -29,6 +29,7 @@ const signUp = async (req, res) =>{
 
         // creating token for auth
         tokenData = {
+            email: userInfo.email,
             role: userInfo.role,
             rent: userInfo.rent //`${userInfo.rent}`
         }
@@ -63,6 +64,7 @@ const login = async (req, res)=>{
             // Creating token for auth
             userData = await dataById(req.body.email);
             tokenData = {
+                email: userData[0].email,
                 role: userData[0].role,
                 rent: userData[0].rent //`${userData[0].rent}`
             }

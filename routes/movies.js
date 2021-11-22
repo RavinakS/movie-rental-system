@@ -14,4 +14,7 @@ router.get('/filter/:genre', moviesByGenre);
 const filterByReleaseDate = movies.filterByReleaseDate;
 router.get('/filter-release-date', filterByReleaseDate);
 
+const rent_a_movie = movies.buyMovie;
+router.put('/rent-movie', rent_a_movie);
+
 module.exports = router;
