@@ -1,6 +1,6 @@
 const moviesTable = require('../model/movies');
 const usersTable = require('../model/users');
-const userToken = require('./middlewares/token');
+// const userToken = require('./middlewares/token');
 const movieValidations = require('./middlewares/schemaValidation').movieValidation;
 
 // Home Page
@@ -89,35 +89,13 @@ const buyMovie = async (req, res) =>{
 //Adding a movie to in App
 const addMovie = async (req, res) =>{
 
-    //checking user role
-    try{
-        token = req.headers.cookie.split("=")[1];
-        userInfo = await userToken.verifyToken(token);
-        if(userInfo === 'err'){
-            console.log('Token error');
-            return res.send({error: "Sorry! something is worng in our side", message:"we will get back to you soon."})
-        }
-        role = userInfo["role"].toLowerCase();
-        if(role === 'admin'){
-            movieDetails = {
-                name: req.body.name,
-                releasDate: req.body.releasDate,
-                genre: req.body.genre,
-                avalCD: req.body.avalCD
-            }
-        }else{
-            return res.send("Sorry! you don't have access to add a movie.");
-        }
-    }catch(err){
-
-        // user needs to login (retun to login page)
-        console.log(err);
-        return res.send("**Login/Signup Page**")
-    }
-
     //validate movie details
     try{
+
+        //checking user role through middleware
+        movieDetails = req.admin;
         await movieValidations.validate(movieDetails);
+
     }catch(err){
         return res.send(err.details[0].message);
     }
@@ -136,8 +114,29 @@ const addMovie = async (req, res) =>{
 
 }
 
-const updateMovie = (req, res) =>{
-    
+const updateMovie = async (req, res) =>{
+
+    //validate movie details
+    try{
+
+        //checking user role through middleware
+        movieDetails = req.admin;
+        await movieValidations.validate(movieDetails);
+
+    }catch(err){
+        return res.send(err.details[0].message);
+    }
+
+    // Updating the movie details
+    try{
+        update = await moviesTable.updateMovie(req.body.name, movieDetails);
+        res.send("Updated Successfully.");
+    }catch(err){
+        console.log(err);
+        res.send(err);
+    }
+
 }
 
-module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, buyMovie};
+
+module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, buyMovie, updateMovie};

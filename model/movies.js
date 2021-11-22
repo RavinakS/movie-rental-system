@@ -20,4 +20,8 @@ const searchMovieByName = (m_name) =>{
     return movieTable.findOne({name: m_name}, {avalCD:1});
 }
 
-module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, searchMovieByName};
+const updateMovie = (m_name, m_details) =>{
+    return movieTable.update({name: m_name}, {$set: m_details});
+}
+
+module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, searchMovieByName, updateMovie};
