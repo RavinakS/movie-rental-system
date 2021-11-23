@@ -1,5 +1,4 @@
 const moviesTable = require('../model/movies');
-const usersTable = require('../model/users');
 // const rentsTable = require('../model/rents');
 const userToken = require('./middlewares/token');
 const movieValidations = require('./middlewares/schemaValidation').movieValidation;
@@ -11,7 +10,6 @@ const searchMovieByGenre = async (req, res) =>{
     if(genre === undefined){
         return res.send("Please provide a genere you wanna search with.")
     }
-
     try{
         movies = await moviesTable.searchMovieByGenre(genre);
         if(movies.length === 0){
@@ -30,7 +28,6 @@ const filterByReleaseDate = async (req, res) =>{
     if(r_date === undefined){
         return res.send("Please provide release date you wanna search.")
     }
-
     try{
         let movies = await moviesTable.filterByReleaseDate(r_date);
         if(movies.length === 0){
@@ -50,64 +47,18 @@ const allMovies = async (req, res) =>{
     res.send(movies);
 }
 
-// Buy a movie
-const buyMovie = async (req, res) =>{
-    let movieName = req.body.name;
-    let user = req.email;
-    if(movieName === undefined){
-        return res.send("Please provide the movie name.");
-    }
-
-    try{
-
-        // is movie available
-        let availableRents = await moviesTable.avalRentsMovieByName(movieName);
-        if(availableRents === null){
-            return res.send("Could not find the movie.");
-        }
-        
-        // if yes? is it available for rent
-        if(availableRents.avalCD > 0){
-            token = req.headers.cookie.split("=")[1];
-            userInfo = await userToken.verifyToken(token);
-            if(userInfo === 'err'){
-                console.log('Token error');
-                return res.send({error: "Sorry! something is worng in our side", message:"we will get back to you soon."})
-            }
-
-            // if yes? update the rent field of the user to +1
-            user_id = userInfo.email;
-            total_rents = userInfo.rent + 1;
-            if(!req.isMovieExist){
-                updateUserRentStatus = await usersTable.updateUserRent(user_id, total_rents);
-                return res.send("Congratulations!! Enjoy your movie.");
-            }
-            return res.send("You Already have this movie, check your rents.")  
-        }
-
-        console.log(availableRents);
-        res.send("Oops! Currently this movie is not available for rents.");
-    }catch(err){
-        console.log(err);
-        res.send(err);
-    }
-
-}
 
 //Adding a movie to in App
 const addMovie = async (req, res) =>{
-
-    //validate movie details
     try{
-
         //checking user role through middleware
         movieDetails = req.admin;
+        //validate movie details
         await movieValidations.validate(movieDetails);
 
     }catch(err){
         return res.send(err.details[0].message);
     }
-
     // add movie Info in DB
     try{
         added = await moviesTable.addMovie(movieDetails);
@@ -123,21 +74,21 @@ const addMovie = async (req, res) =>{
 }
 
 const updateMovie = async (req, res) =>{
-
-    //validate movie details
     try{
-
         //checking user role through middleware
         movieDetails = req.admin;
+        //validate movie details
         await movieValidations.validate(movieDetails);
 
     }catch(err){
         return res.send(err.details[0].message);
     }
-
     // Updating the movie details
     try{
         update = await moviesTable.updateMovie(req.body.name, movieDetails);
+        if(update.matchedCount===0){
+            return res.send("Couldn't find the movie.")
+        }
         res.send("Updated Successfully.");
     }catch(err){
         console.log(err);
@@ -146,5 +97,24 @@ const updateMovie = async (req, res) =>{
 
 }
 
+const deleteMovie = async (req, res) =>{
+    try{
+        if(!req.admin){
+            return res.send("You don't have access to delete a movie.")
+        }
+        movieName = req.params.name;
+        delete_movie = await moviesTable.deleteMovie(movieName);
+        if(delete_movie.deletedCount === 0){
+            return res.send("Movie couldn't find.");
+        }
+        res.send("Have Successfully Deleted the Movie");
 
-module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, buyMovie, updateMovie};
+    }catch(err){
+        console.log(err);
+        res.send(err)
+    }
+}
+
+
+
+module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, updateMovie, deleteMovie};

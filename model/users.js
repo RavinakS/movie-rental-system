@@ -16,4 +16,8 @@ const updateUserRent = (user, rents) =>{
     return users.updateOne({email:user}, {rent: rents});
 }
 
-module.exports = {signUp, userDetailsById, profile, updateUserRent};
+const allUsersData = () =>{
+    return users.find();
+}
+
+module.exports = {signUp, userDetailsById, profile, updateUserRent, allUsersData};

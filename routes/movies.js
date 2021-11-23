@@ -20,15 +20,13 @@ router.get('/filter/:genre', moviesByGenre);
 const filterByReleaseDate = movies.filterByReleaseDate;
 router.get('/filter-release-date', filterByReleaseDate);
 
-// buy a movie
-const auth_for_rent = user_auth.auth_for_rent;
-const isRentExist = require('../controller/middlewares/isMovieRentExist');
-const rent_a_movie = movies.buyMovie;
-router.put('/rent-movie', auth_for_rent, isRentExist, rent_a_movie);
-
 // update movie details
 // auth_for_movie = from line no 11 (already declared)
 const update_a_movie = movies.updateMovie;
 router.put('/update-movie', auth_for_movie, update_a_movie);
+
+const delete_a_movie = movies.deleteMovie;
+const auth_user = require('../controller/middlewares/user_auth').auth_for_users;
+router.delete('/delete-movie/:name', auth_user, delete_a_movie);
 
 module.exports = router;

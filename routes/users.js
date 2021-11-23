@@ -14,4 +14,8 @@ router.get('/login', verifyPassword, login);
 const profile = users.profile;
 router.get('/view-profile', profile);
 
+const auth = require('../controller/middlewares/user_auth').auth_for_users;
+const allUsersData = users.allUsersInfo;
+router.get('/view-users-data', auth, allUsersData);
+
 module.exports = router;

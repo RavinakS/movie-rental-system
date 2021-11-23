@@ -41,13 +41,31 @@ async function auth_for_rent(req, res, next) {
             res.send({error: "Sorry! something is worng in our side", message:"we will get back to you soon."});
             return next();
         }
-        req.email = userInfo.email;
+        req.user = userInfo;
         next()
     }catch(err){
-        console.log(err);
-        res.send(err);
+        res.send('** Login/Signup **')
+        // console.log(err);
+        // res.send(err);
         next();
     }
 }
 
-module.exports = {user_auth_for_movie, auth_for_rent}
+async function auth_for_users(req, res, next){
+    try{
+        let token = req.headers.cookie.split('=')[1];
+        userInfo = await userToken.verifyToken(token);
+        user_role = userInfo.role.toLowerCase();
+        if(user_role === 'admin'){
+            req.admin = true;
+            return next()
+        }
+        req.admin = false;
+        return next();
+    }catch(err){
+        console.log(err);
+        res.send(err);
+    }
+}
+
+module.exports = {user_auth_for_movie, auth_for_rent, auth_for_users}

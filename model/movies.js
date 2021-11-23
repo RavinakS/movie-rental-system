@@ -25,7 +25,11 @@ const getMovieByName = (m_name) =>{
 }
 
 const updateMovie = (m_name, m_details) =>{
-    return movieTable.update({name: m_name}, {$set: m_details});
+    return movieTable.updateOne({name: m_name}, {$set: m_details});
 }
 
-module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, avalRentsMovieByName, updateMovie, getMovieByName};
+const deleteMovie = (m_name) =>{
+    return movieTable.deleteOne({name: m_name});
+}
+
+module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, avalRentsMovieByName, updateMovie, getMovieByName, deleteMovie};

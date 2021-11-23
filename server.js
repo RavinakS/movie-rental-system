@@ -10,6 +10,12 @@ app.use('/', users);
 const movies = require('./routes/movies');
 app.use('/', movies);
 
+const rents = require('./routes/rents');
+app.use('/', rents);
+
+const pagination = require('./routes/pagination');
+app.use('/', pagination);
+
 app.listen(3050, (req, res)=>{
     console.log("Server is on..");
 })

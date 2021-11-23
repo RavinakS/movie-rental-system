@@ -99,4 +99,17 @@ const profile = async (req, res) =>{
     }
 }
 
-module.exports = {signUp, login, profile};
+const allUsersInfo = async (req, res) =>{
+    try{
+        if(!req.admin){
+            return res.send("Only Admin have access to users data.");
+        }
+        usersData = await users.allUsersData();
+        res.send(usersData);
+    }catch(err){
+        console.log(err);
+        res.send(err);
+    }
+}
+
+module.exports = {signUp, login, profile, allUsersInfo};
