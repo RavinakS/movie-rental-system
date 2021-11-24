@@ -29,8 +29,8 @@ const rentsTableSchema = new Schema({
     avalCD: {type: Number}
 })
 
-const users = Model('users', usersTableSchema);
-const movies = Model('movies', moviesTableSchema);
-const rents = Model('rents', rentsTableSchema);
+exports.users = Model('users', usersTableSchema);
+exports.movies = Model('movies', moviesTableSchema);
+exports.rents = Model('rents', rentsTableSchema);
 
-module.exports = {users, movies, rents};
+// module.exports = {users, movies, rents};
