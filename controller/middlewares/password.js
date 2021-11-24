@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const userDetailsById = require('../../services/users.services').userDetailsById;
+const {userDetailsById} = require('../../services/users.services');
 
 exports.hashPass = async (req, res, next) =>{
     try{
@@ -29,4 +29,3 @@ exports.comparePass = async (req, res, next) =>{
     }
 }
 
-// module.exports = {hashPass, comparePass};

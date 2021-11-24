@@ -19,5 +19,3 @@ exports.updateUserRent = (user, rents) =>{
 exports.allUsersData = () =>{
     return users.find();
 }
-
-// module.exports = {signUp, userDetailsById, profile, updateUserRent, allUsersData};

@@ -1,10 +1,9 @@
 const {userValidation} = require('./utils/schemaValidation');
-const users = require('../services/users.services');
-const token = require('./utils/token');
-const dataById = require('../services/users.services').userDetailsById;
+const {signUp, userDetailsById, profile, allUsersData} = require('../services/users.services');
+const {createToken} = require('./utils/token');
 
 //Creating account 
-exports.signUp = async (req, res) =>{
+exports.sign_up = async (req, res) =>{
 
     // validate user details
     let userInfo = {
@@ -24,7 +23,7 @@ exports.signUp = async (req, res) =>{
         userInfo["password"] = req.hashPass;
 
         // Finally create account
-        signUpStatus = await users.signUp(userInfo);
+        signUpStatus = await signUp(userInfo);
 
         // creating token for auth
         tokenData = {
@@ -32,7 +31,7 @@ exports.signUp = async (req, res) =>{
             role: userInfo.role,
             rent: userInfo.rent //`${userInfo.rent}`
         }
-        createdToken = await token.createToken(tokenData);
+        createdToken = await createToken(tokenData);
         res.cookie('token', createdToken);
 
         //response
@@ -61,13 +60,13 @@ exports.login = async (req, res)=>{
         }else if(req.validPassword){
             
             // Creating token for auth
-            userData = await dataById(req.body.email);
+            userData = await userDetailsById(req.body.email);
             tokenData = {
                 email: userData[0].email,
                 role: userData[0].role,
                 rent: userData[0].rent //`${userData[0].rent}`
             }
-            createdToken = await token.createToken(tokenData);
+            createdToken = await createToken(tokenData);
             res.cookie('token', createdToken);
 
             // in response
@@ -84,10 +83,10 @@ exports.login = async (req, res)=>{
     
 }
 
-exports.profile = async (req, res) =>{
+exports.user_profile = async (req, res) =>{
     try{
         const userID = req.body.email;
-        userInfo = await users.profile(userID);
+        userInfo = await profile(userID);
         if(userInfo.length === 0){
             return res.send("** Login/Signup page **")
         }
@@ -103,12 +102,10 @@ exports.allUsersInfo = async (req, res) =>{
         if(!req.admin){
             return res.send("Only Admin have access to users data.");
         }
-        usersData = await users.allUsersData();
+        usersData = await allUsersData();
         res.send(usersData);
     }catch(err){
         console.log(err);
         res.send(err);
     }
 }
-
-// module.exports = {signUp, login, profile, allUsersInfo};

@@ -32,5 +32,3 @@ const rentsTableSchema = new Schema({
 exports.users = Model('users', usersTableSchema);
 exports.movies = Model('movies', moviesTableSchema);
 exports.rents = Model('rents', rentsTableSchema);
-
-// module.exports = {users, movies, rents};

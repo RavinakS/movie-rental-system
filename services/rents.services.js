@@ -11,5 +11,3 @@ exports.findRentsByMovieName = (m_name) =>{
 exports.findRentsByUserID = (user_id) =>{
     return rents.find({user: user_id});
 }
-
-// module.exports = {addRent, findRentsByMovieName, findRentsByUserID};

@@ -48,5 +48,3 @@ exports.pagination = async (req, res) =>{
         res.send(err);
     }
 }
-
-// module.exports = pagination;

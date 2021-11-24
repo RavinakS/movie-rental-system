@@ -1,5 +1,4 @@
-const rentsTable = require('../../services/rents.services');
-const moviesTable = require('../../services/movies.services');
+const {findRentsByMovieName} = require('../../services/rents.services');
 
 exports.isMovieRentExist = async (req, res, next) =>{
     let movieName = req.body.name;
@@ -11,7 +10,7 @@ exports.isMovieRentExist = async (req, res, next) =>{
     try{ 
 
         // get all rents for this movie
-        findRentsByMname = await rentsTable.findRentsByMovieName(movieName);
+        findRentsByMname = await findRentsByMovieName(movieName);
         all_rents = findRentsByMname;
 
         // checking if the user already have taken this movie rent
@@ -39,5 +38,3 @@ exports.isMovieRentExist = async (req, res, next) =>{
         next();
     }
 }
-
-// module.exports = isMovieRentExist;

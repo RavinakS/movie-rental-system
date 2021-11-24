@@ -1,7 +1,6 @@
-const moviesTable = require('../services/movies.services');
-const userToken = require('./utils/token');
-const usersTable = require('../services/users.services');
-const rentsTable = require('../services/rents.services');
+const {avalRentsMovieByName, getMovieByName} = require('../services/movies.services');
+const {userDetailsById, updateUserRent} = require('../services/users.services');
+const {addRent, findRentsByUserID} = require('../services/rents.services');
 
 // Buy a movie
 exports.buyMovie = async (req, res) =>{
@@ -13,7 +12,7 @@ exports.buyMovie = async (req, res) =>{
 
     try{
         // is movie available
-        let availableRents = await moviesTable.avalRentsMovieByName(movieName);
+        let availableRents = await avalRentsMovieByName(movieName);
         if(availableRents === null){
             return res.send("Could not find the movie.");
         }
@@ -23,7 +22,7 @@ exports.buyMovie = async (req, res) =>{
 
             // if user have not taken rent already for this movie, add the movie with user's email to rents table
             if(!req.movieRentExist){
-                movie_details = await moviesTable.getMovieByName(movieName);
+                movie_details = await getMovieByName(movieName);
                 if(movie_details === null){
                     return res.send("Could not find the movie.");
                 } 
@@ -35,11 +34,11 @@ exports.buyMovie = async (req, res) =>{
                     genre: movie_details.genre,
                     avalCD: movie_details.avalCD
                 };
-                added = await rentsTable.addRent(rent_details);
+                added = await addRent(rent_details);
 
                 // update the rent field of the user to +1
                 total_rents = auth_data.rent + 1;
-                updateUserRentStatus = await usersTable.updateUserRent(auth_data.email, total_rents);
+                updateUserRentStatus = await updateUserRent(auth_data.email, total_rents);
                 return res.send("Congratulations!! Enjoy your movie.");
             }
             return res.send("You Already have this movie, check your rents.")  
@@ -54,6 +53,7 @@ exports.buyMovie = async (req, res) =>{
 
 }
 
+// view a particular user's rents details
 exports.viewUserRents = async (req, res) =>{
     user_id = req.body.email;
     if(user_id === undefined){
@@ -63,18 +63,16 @@ exports.viewUserRents = async (req, res) =>{
         if(!req.admin){
             return res.send("Access denied.");
         }
-        getUserDetails = await usersTable.userDetailsById(user_id); 
+        getUserDetails = await userDetailsById(user_id); 
         if(getUserDetails.length === 0){
             return res.send("User not exist.");
         }else if(getUserDetails[0].rent === 0){
             return res.send("0 rents.")
         }
-        all_rents = await rentsTable.findRentsByUserID(user_id);
+        all_rents = await findRentsByUserID(user_id);
         res.send({No_of_rents: `${getUserDetails[0].rent}`, rents: all_rents});
     }catch(err){
         console.log(err);
         res.send(err);
     }
 }
-
-// module.exports = {buyMovie, viewUserRents};

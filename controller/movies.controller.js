@@ -1,17 +1,15 @@
-const moviesTable = require('../services/movies.services');
-// const rentsTable = require('../model/rents');
-const userToken = require('./utils/token');
-const movieValidations = require('./utils/schemaValidation').movieValidation;
+const { movieValidation } = require('./utils/schemaValidation');
+const {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, updateMovie, deleteMovie} = require('../services/movies.services');
 
 // Home Page
 // Search movie by a genre
-exports.searchMovieByGenre = async (req, res) =>{
+exports.search_movie_by_genre = async (req, res) =>{
     genre = req.params.genre;
     if(genre === undefined){
         return res.send("Please provide a genere you wanna search with.")
     }
     try{
-        movies = await moviesTable.searchMovieByGenre(genre);
+        movies = await searchMovieByGenre(genre);
         if(movies.length === 0){
             return res.send("Not Available.");
         }
@@ -23,13 +21,13 @@ exports.searchMovieByGenre = async (req, res) =>{
 }
 
 // search movie by release date
-exports.filterByReleaseDate = async (req, res) =>{
+exports.filter_by_release_date = async (req, res) =>{
     let r_date = req.body.releasDate;
     if(r_date === undefined){
         return res.send("Please provide release date you wanna search.")
     }
     try{
-        let movies = await moviesTable.filterByReleaseDate(r_date);
+        let movies = await filterByReleaseDate(r_date);
         if(movies.length === 0){
             return res.send("Couldn't Find.");
         }
@@ -42,26 +40,26 @@ exports.filterByReleaseDate = async (req, res) =>{
 
 
 // Show all movies.
-exports.allMovies = async (req, res) =>{
-    movies = await moviesTable.allMovies();
+exports.all_movies = async (req, res) =>{
+    movies = await allMovies();
     res.send(movies);
 }
 
 
 //Adding a movie to in App
-exports.addMovie = async (req, res) =>{
+exports.add_movie = async (req, res) =>{
     try{
         //checking user role through middleware
         movieDetails = req.admin;
         //validate movie details
-        await movieValidations.validate(movieDetails);
+        await movieValidation.validate(movieDetails);
 
     }catch(err){
         return res.send(err.details[0].message);
     }
     // add movie Info in DB
     try{
-        added = await moviesTable.addMovie(movieDetails);
+        added = await addMovie(movieDetails);
         res.send("Movie has been added.");
     }catch(err){
         if(err.name === "MongoServerError" && err.code === 11000){ 
@@ -73,19 +71,19 @@ exports.addMovie = async (req, res) =>{
 
 }
 
-exports.updateMovie = async (req, res) =>{
+exports.update_movie = async (req, res) =>{
     try{
         //checking user role through middleware
         movieDetails = req.admin;
         //validate movie details
-        await movieValidations.validate(movieDetails);
+        await movieValidation.validate(movieDetails);
 
     }catch(err){
         return res.send(err.details[0].message);
     }
     // Updating the movie details
     try{
-        update = await moviesTable.updateMovie(req.body.name, movieDetails);
+        update = await updateMovie(req.body.name, movieDetails);
         if(update.matchedCount===0){
             return res.send("Couldn't find the movie.")
         }
@@ -97,13 +95,13 @@ exports.updateMovie = async (req, res) =>{
 
 }
 
-exports.deleteMovie = async (req, res) =>{
+exports.delete_movie = async (req, res) =>{
     try{
         if(!req.admin){
             return res.send("You don't have access to delete a movie.")
         }
         movieName = req.params.name;
-        delete_movie = await moviesTable.deleteMovie(movieName);
+        delete_movie = await deleteMovie(movieName);
         if(delete_movie.deletedCount === 0){
             return res.send("Movie couldn't find.");
         }
@@ -114,7 +112,3 @@ exports.deleteMovie = async (req, res) =>{
         res.send(err)
     }
 }
-
-
-
-// module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, updateMovie, deleteMovie};

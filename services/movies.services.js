@@ -31,5 +31,3 @@ exports.updateMovie = (m_name, m_details) =>{
 exports.deleteMovie = (m_name) =>{
     return movies.deleteOne({name: m_name});
 }
-
-// module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, avalRentsMovieByName, updateMovie, getMovieByName, deleteMovie};

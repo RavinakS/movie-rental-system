@@ -19,5 +19,3 @@ exports.verifyToken = async (token) =>{
         return "err";
     }
 }
-
-// module.exports = {createToken, verifyToken};

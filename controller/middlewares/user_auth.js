@@ -1,9 +1,9 @@
-const userToken = require('../utils/token');
+const {verifyToken} = require('../utils/token');
 
 exports.user_auth_for_movie = async function(req, res, next){
     try{
         token = req.headers.cookie.split("=")[1];
-        userInfo = await userToken.verifyToken(token);
+        userInfo = await verifyToken(token);
         if(userInfo === 'err'){
             console.log('Token error');
             res.send({error: "Sorry! something is worng in our side", message:"we will get back to you soon."});
@@ -35,7 +35,7 @@ exports.user_auth_for_movie = async function(req, res, next){
 exports.auth_for_rent = async function(req, res, next) {
     try{
         let token = req.headers.cookie.split('=')[1];
-        userInfo = await userToken.verifyToken(token);
+        userInfo = await verifyToken(token);
         if(userInfo==='err'){
             console.log('Token error');
             res.send({error: "Sorry! something is worng in our side", message:"we will get back to you soon."});
@@ -44,9 +44,7 @@ exports.auth_for_rent = async function(req, res, next) {
         req.user = userInfo;
         next()
     }catch(err){
-        res.send('** Login/Signup **')
-        // console.log(err);
-        // res.send(err);
+        res.send('** Login/Signup **');
         next();
     }
 }
@@ -54,7 +52,7 @@ exports.auth_for_rent = async function(req, res, next) {
 exports.auth_for_users = async function(req, res, next){
     try{
         let token = req.headers.cookie.split('=')[1];
-        userInfo = await userToken.verifyToken(token);
+        userInfo = await verifyToken(token);
         user_role = userInfo.role.toLowerCase();
         if(user_role === 'admin'){
             req.admin = true;
@@ -67,5 +65,3 @@ exports.auth_for_users = async function(req, res, next){
         res.send(err);
     }
 }
-
-// module.exports = {user_auth_for_movie, auth_for_rent, auth_for_users}

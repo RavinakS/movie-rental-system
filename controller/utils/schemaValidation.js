@@ -14,5 +14,3 @@ exports.movieValidation = Joi.object({
     genre: Joi.string().required(),
     avalCD: Joi.number().required()
 })
-
-// module.exports = {userValidation, movieValidation};
