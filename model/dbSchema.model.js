@@ -1,4 +1,4 @@
-const db = require('./dbConnection');
+const db = require('./dbConnection.model');
 
 const Schema = db.Schema;
 const Model = db.model;

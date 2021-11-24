@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
-const userDetailsById = require('../../model/users').userDetailsById;
+const userDetailsById = require('../../services/users.services').userDetailsById;
 
-const hashPass = async (req, res, next) =>{
+exports.hashPass = async (req, res, next) =>{
     try{
         userPass = req.body.password;
         salt = await bcrypt.genSalt();
@@ -15,7 +15,7 @@ const hashPass = async (req, res, next) =>{
     }
 }
 
-const comparePass = async (req, res, next) =>{
+exports.comparePass = async (req, res, next) =>{
     try{
         userInfo = await userDetailsById(req.body.email);
         dbPassword = userInfo[0].password;
@@ -29,4 +29,4 @@ const comparePass = async (req, res, next) =>{
     }
 }
 
-module.exports = {hashPass, comparePass};
+// module.exports = {hashPass, comparePass};

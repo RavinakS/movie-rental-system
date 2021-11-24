@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const userValidation = Joi.object({
+exports.userValidation = Joi.object({
     name: Joi.string().min(3).max(10).pattern(/^[A-Z][a-z]+$/).required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).max(15).required(),
@@ -8,11 +8,11 @@ const userValidation = Joi.object({
     rent: Joi.number()
 })
 
-const movieValidation = Joi.object({
+exports.movieValidation = Joi.object({
     movieName: Joi.string().required(),
     releasDate: Joi.date().required(),
     genre: Joi.string().required(),
     avalCD: Joi.number().required()
 })
 
-module.exports = {userValidation, movieValidation};
+// module.exports = {userValidation, movieValidation};

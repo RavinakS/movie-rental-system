@@ -1,11 +1,11 @@
-const moviesTable = require('../model/movies');
+const moviesTable = require('../services/movies.services');
 // const rentsTable = require('../model/rents');
-const userToken = require('./middlewares/token');
-const movieValidations = require('./middlewares/schemaValidation').movieValidation;
+const userToken = require('./utils/token');
+const movieValidations = require('./utils/schemaValidation').movieValidation;
 
 // Home Page
 // Search movie by a genre
-const searchMovieByGenre = async (req, res) =>{
+exports.searchMovieByGenre = async (req, res) =>{
     genre = req.params.genre;
     if(genre === undefined){
         return res.send("Please provide a genere you wanna search with.")
@@ -23,7 +23,7 @@ const searchMovieByGenre = async (req, res) =>{
 }
 
 // search movie by release date
-const filterByReleaseDate = async (req, res) =>{
+exports.filterByReleaseDate = async (req, res) =>{
     let r_date = req.body.releasDate;
     if(r_date === undefined){
         return res.send("Please provide release date you wanna search.")
@@ -42,14 +42,14 @@ const filterByReleaseDate = async (req, res) =>{
 
 
 // Show all movies.
-const allMovies = async (req, res) =>{
+exports.allMovies = async (req, res) =>{
     movies = await moviesTable.allMovies();
     res.send(movies);
 }
 
 
 //Adding a movie to in App
-const addMovie = async (req, res) =>{
+exports.addMovie = async (req, res) =>{
     try{
         //checking user role through middleware
         movieDetails = req.admin;
@@ -73,7 +73,7 @@ const addMovie = async (req, res) =>{
 
 }
 
-const updateMovie = async (req, res) =>{
+exports.updateMovie = async (req, res) =>{
     try{
         //checking user role through middleware
         movieDetails = req.admin;
@@ -97,7 +97,7 @@ const updateMovie = async (req, res) =>{
 
 }
 
-const deleteMovie = async (req, res) =>{
+exports.deleteMovie = async (req, res) =>{
     try{
         if(!req.admin){
             return res.send("You don't have access to delete a movie.")
@@ -117,4 +117,4 @@ const deleteMovie = async (req, res) =>{
 
 
 
-module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, updateMovie, deleteMovie};
+// module.exports = {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, updateMovie, deleteMovie};

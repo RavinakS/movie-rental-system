@@ -1,4 +1,4 @@
-const movies = require('../controller/movies');
+const movies = require('../controller/movies.controller');
 const express = require('express');
 const router = express.Router();
 const user_auth = require('../controller/middlewares/user_auth');

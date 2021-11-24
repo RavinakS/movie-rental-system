@@ -1,6 +1,6 @@
-const userToken = require('./token');
+const userToken = require('../utils/token');
 
-async function user_auth_for_movie(req, res, next){
+exports.user_auth_for_movie = async function(req, res, next){
     try{
         token = req.headers.cookie.split("=")[1];
         userInfo = await userToken.verifyToken(token);
@@ -32,7 +32,7 @@ async function user_auth_for_movie(req, res, next){
     }
 }
 
-async function auth_for_rent(req, res, next) {
+exports.auth_for_rent = async function(req, res, next) {
     try{
         let token = req.headers.cookie.split('=')[1];
         userInfo = await userToken.verifyToken(token);
@@ -51,7 +51,7 @@ async function auth_for_rent(req, res, next) {
     }
 }
 
-async function auth_for_users(req, res, next){
+exports.auth_for_users = async function(req, res, next){
     try{
         let token = req.headers.cookie.split('=')[1];
         userInfo = await userToken.verifyToken(token);
@@ -68,4 +68,4 @@ async function auth_for_users(req, res, next){
     }
 }
 
-module.exports = {user_auth_for_movie, auth_for_rent, auth_for_users}
+// module.exports = {user_auth_for_movie, auth_for_rent, auth_for_users}

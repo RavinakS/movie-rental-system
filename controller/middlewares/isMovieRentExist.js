@@ -1,7 +1,7 @@
-const rentsTable = require('../../model/rents');
-const moviesTable = require('../../model/movies');
+const rentsTable = require('../../services/rents.services');
+const moviesTable = require('../../services/movies.services');
 
-const isMovieRentExist = async (req, res, next) =>{
+exports.isMovieRentExist = async (req, res, next) =>{
     let movieName = req.body.name;
     let user_id = req.user.email;
     if(movieName === undefined){
@@ -40,4 +40,4 @@ const isMovieRentExist = async (req, res, next) =>{
     }
 }
 
-module.exports = isMovieRentExist;
+// module.exports = isMovieRentExist;

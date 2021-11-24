@@ -1,10 +1,10 @@
-const movies = require('../model/pagination');
+const movies = require('../services/pagination.services');
 
 
 const numOfMoviesInAPage = 10;
 const total_pages = 2;
 
-const pagination = async (req, res) =>{
+exports.pagination = async (req, res) =>{
     let limit = req.params.limit;
     let page_no = req.params.pageNum;
 
@@ -49,4 +49,4 @@ const pagination = async (req, res) =>{
     }
 }
 
-module.exports = pagination;
+// module.exports = pagination;

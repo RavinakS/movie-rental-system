@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const user_auth = require('../controller/middlewares/user_auth');
-const rents = require('../controller/rents');
+const rents = require('../controller/rents.controller');
 
 // buy a movie
 const auth_for_rent = user_auth.auth_for_rent;

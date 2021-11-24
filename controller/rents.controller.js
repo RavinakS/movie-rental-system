@@ -1,10 +1,10 @@
-const moviesTable = require('../model/movies');
-const userToken = require('./middlewares/token');
-const usersTable = require('../model/users');
-const rentsTable = require('../model/rents');
+const moviesTable = require('../services/movies.services');
+const userToken = require('./utils/token');
+const usersTable = require('../services/users.services');
+const rentsTable = require('../services/rents.services');
 
 // Buy a movie
-const buyMovie = async (req, res) =>{
+exports.buyMovie = async (req, res) =>{
     let movieName = req.body.name;
     let auth_data = req.user;
     if(movieName === undefined){
@@ -54,7 +54,7 @@ const buyMovie = async (req, res) =>{
 
 }
 
-const viewUserRents = async (req, res) =>{
+exports.viewUserRents = async (req, res) =>{
     user_id = req.body.email;
     if(user_id === undefined){
         return res.send("Please provide the user_id.");
@@ -77,4 +77,4 @@ const viewUserRents = async (req, res) =>{
     }
 }
 
-module.exports = {buyMovie, viewUserRents};
+// module.exports = {buyMovie, viewUserRents};

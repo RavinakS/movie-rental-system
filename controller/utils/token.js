@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const key = process.env.SECRET_KEY;
 
-const createToken = async (data) =>{
+exports.createToken = async (data) =>{
     try{
         token = await jwt.sign(data, key);
         return token;
@@ -11,7 +11,7 @@ const createToken = async (data) =>{
     }
 }
 
-const verifyToken = async (token) =>{
+exports.verifyToken = async (token) =>{
     try{
         userData = await jwt.verify(token, key);
         return userData;
@@ -20,4 +20,4 @@ const verifyToken = async (token) =>{
     }
 }
 
-module.exports = {createToken, verifyToken};
+// module.exports = {createToken, verifyToken};

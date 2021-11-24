@@ -1,10 +1,10 @@
-const userValidation = require('./middlewares/schemaValidation').userValidation;
-const users = require('../model/users');
-const token = require('./middlewares/token');
-const dataById = require('../model/users').userDetailsById;
+const {userValidation} = require('./utils/schemaValidation');
+const users = require('../services/users.services');
+const token = require('./utils/token');
+const dataById = require('../services/users.services').userDetailsById;
 
 //Creating account 
-const signUp = async (req, res) =>{
+exports.signUp = async (req, res) =>{
 
     // validate user details
     let userInfo = {
@@ -50,7 +50,7 @@ const signUp = async (req, res) =>{
 
 
 // Login
-const login = async (req, res)=>{
+exports.login = async (req, res)=>{
     try{
         
         // password checking through middleware
@@ -84,7 +84,7 @@ const login = async (req, res)=>{
     
 }
 
-const profile = async (req, res) =>{
+exports.profile = async (req, res) =>{
     try{
         const userID = req.body.email;
         userInfo = await users.profile(userID);
@@ -98,7 +98,7 @@ const profile = async (req, res) =>{
     }
 }
 
-const allUsersInfo = async (req, res) =>{
+exports.allUsersInfo = async (req, res) =>{
     try{
         if(!req.admin){
             return res.send("Only Admin have access to users data.");
@@ -111,4 +111,4 @@ const allUsersInfo = async (req, res) =>{
     }
 }
 
-module.exports = {signUp, login, profile, allUsersInfo};
+// module.exports = {signUp, login, profile, allUsersInfo};
