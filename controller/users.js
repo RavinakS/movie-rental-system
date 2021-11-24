@@ -9,19 +9,18 @@ const signUp = async (req, res) =>{
     // validate user details
     let userInfo = {
         name: req.body.name,
-        email: req.body.email.toLowerCase(),
+        email: req.body.email,
         password: req.body.password,
         role: req.body.role,
         rent: req.body.rent
     }
     try{
-        await userValidation.validate(userInfo);
-    }catch(error){
-        return res.send(error.details[0].message);
-    }
+        validated = await userValidation.validate(userInfo);
+        if(validated.error){
+            return res.send(validated.error.details[0].message);
+        }
 
-    //password hashing is done in middleware
-    try{
+        //password hashing is done in middleware
         userInfo["password"] = req.hashPass;
 
         // Finally create account
