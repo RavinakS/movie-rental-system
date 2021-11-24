@@ -1,21 +1,16 @@
-const users = require('../controller/users.controller');
-const password = require('../controller/middlewares/password');
 const express = require('express');
 const router = express.Router();
 
-const hashPassword = password.hashPass;
-const createAccount = users.signUp;
-router.post('/create-account', hashPassword, createAccount);
+const {signUp, login, profile, allUsersInfo} = require('../controller/users.controller');
+const {hashPass, comparePass} = require('../controller/middlewares/password');
+const {auth_for_users} = require('../controller/middlewares/user_auth');
 
-const verifyPassword = password.comparePass;
-const login = users.login
-router.get('/login', verifyPassword, login);
+router.post('/create-account', hashPass, signUp);
 
-const profile = users.profile;
+router.get('/login', comparePass, login);
+
 router.get('/view-profile', profile);
 
-const auth = require('../controller/middlewares/user_auth').auth_for_users;
-const allUsersData = users.allUsersInfo;
-router.get('/view-users-data', auth, allUsersData);
+router.get('/view-users-data', auth_for_users, allUsersInfo);
 
 module.exports = router;

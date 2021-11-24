@@ -1,16 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const user_auth = require('../controller/middlewares/user_auth');
-const rents = require('../controller/rents.controller');
+const {buyMovie, viewUserRents} = require('../controller/rents.controller');
+const {auth_for_rent, auth_for_users} = require('../controller/middlewares/user_auth');
+const {isMovieRentExist} = require('../controller/middlewares/isMovieRentExist');
 
 // buy a movie
-const auth_for_rent = user_auth.auth_for_rent;
-const isRentExist = require('../controller/middlewares/isMovieRentExist');
-const rent_a_movie = rents.buyMovie;
-router.post('/rent-movie', auth_for_rent, isRentExist, rent_a_movie);
+router.post('/rent-movie', auth_for_rent, isMovieRentExist, buyMovie);
 
-const auth_user = user_auth.auth_for_users;
-const user_rents = rents.viewUserRents;
-router.get('/user-rent', auth_user, user_rents);
+// view rent details of a particuler user
+router.get('/user-rent', auth_for_users, viewUserRents);
 
 module.exports = router;

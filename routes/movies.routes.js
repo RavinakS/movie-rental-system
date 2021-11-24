@@ -1,32 +1,25 @@
-const movies = require('../controller/movies.controller');
+const {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, updateMovie, deleteMovie} = require('../controller/movies.controller');
+const {user_auth_for_movie, auth_for_users} = require('../controller/middlewares/user_auth');
+
 const express = require('express');
 const router = express.Router();
-const user_auth = require('../controller/middlewares/user_auth');
 
 //view all movies
-const allMovies = movies.allMovies;
 router.get('/all-movies', allMovies);
 
 // add a new movie
-let auth_for_movie = user_auth.user_auth_for_movie;
-const addMovie = movies.addMovie;
-router.post('/add-movie', auth_for_movie, addMovie);
+router.post('/add-movie', user_auth_for_movie, addMovie);
 
 // search movie with a genere
-const moviesByGenre = movies.searchMovieByGenre;
-router.get('/filter/:genre', moviesByGenre);
+router.get('/filter/:genre', searchMovieByGenre);
 
 // search movie by release date
-const filterByReleaseDate = movies.filterByReleaseDate;
 router.get('/filter-release-date', filterByReleaseDate);
 
 // update movie details
-// auth_for_movie = from line no 11 (already declared)
-const update_a_movie = movies.updateMovie;
-router.put('/update-movie', auth_for_movie, update_a_movie);
+router.put('/update-movie', user_auth_for_movie, updateMovie);
 
-const delete_a_movie = movies.deleteMovie;
-const auth_user = require('../controller/middlewares/user_auth').auth_for_users;
-router.delete('/delete-movie/:name', auth_user, delete_a_movie);
+//delete a movie
+router.delete('/delete-movie/:name', auth_for_users, deleteMovie);
 
 module.exports = router;
