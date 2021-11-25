@@ -9,7 +9,7 @@ exports.userValidation = Joi.object({
 })
 
 exports.movieValidation = Joi.object({
-    movieName: Joi.string().required(),
+    name: Joi.string().required(),
     releasDate: Joi.date().required(),
     genre: Joi.string().required(),
     avalCD: Joi.number().required()

@@ -20,7 +20,7 @@ exports.user_auth_for_movie = async function(req, res, next){
             req.admin = movieDetails;
             next()
         }else{
-            res.send("Sorry! you don't have access to add a movie.");
+            res.send({status_code: 401, message: "Sorry! you don't have access to add a movie."});
             return next()
         }
     }catch(err){

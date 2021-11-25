@@ -24,7 +24,7 @@ exports.comparePass = async (req, res, next) =>{
         next();
     }catch(err){
         req.validPassword = 'noUser';
-        res.send({status: "User not exist.", message: "Create Account (signUp)"});
+        // res.send({status: "User not exist.", message: "Create Account (signUp)"});
         next();
     }
 }

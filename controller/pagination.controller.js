@@ -10,18 +10,18 @@ exports.pagination = async (req, res) =>{
 
     // number of movies (limit)
     if(limit==0){
-        return res.send(`Please provide number of movies you wanna see on page number ${page_no}`);
+        return res.send({status_code: 400, error_msg: `Please provide number of movies you wanna see on page number ${page_no}`});
     }else if(limit>numOfMoviesInAPage){
-        return res.send("A page can only have <= 10 movies. you can change the page number as per your requirement.")
+        return res.send({status_code: 400, error_msg: "A page can only have <= 10 movies. you can change the page number as per your requirement."})
     }
     
     // Page Number
     if(page_no > total_pages){
-        return res.send(`Available pages ${total_pages}`);
+        return res.send({status_code: 400, error_msg: `Available pages ${total_pages}`});
     }else if(page_no == 0){
         page_no = 1;
     }else if(page_no < 0){
-        return res.send("Page number should a positive number.")
+        return res.send({status_code: 400, error_msg: "Page number should a positive number."})
     }
 
     try{
@@ -39,9 +39,9 @@ exports.pagination = async (req, res) =>{
                 moviesToShow.push(movie_list[count]);
                 count = count + 1;
             }
-            res.send(moviesToShow);
+            res.send({status_code: 200, movies: moviesToShow});
         }else{
-            res.send(movie_list);
+            res.send({status_code: 200, movies: movie_list});
         }
     }catch(err){
         console.log(err);
