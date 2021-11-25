@@ -20,14 +20,14 @@ exports.user_auth_for_movie = async function(req, res, next){
             req.admin = movieDetails;
             next()
         }else{
-            res.send({status_code: 401, message: "Sorry! you don't have access to add a movie."});
+            res.status(401).send({status_code: 401, message: "Sorry! you don't have access to add a movie."});
             return next()
         }
     }catch(err){
 
         // user needs to login (retun to login page)
         console.log(err);
-        res.send("**Login/Signup Page**");
+        res.status(404).send("**Login/Signup Page**");
         return next();
     }
 }
@@ -44,7 +44,7 @@ exports.auth_for_rent = async function(req, res, next) {
         req.user = userInfo;
         next()
     }catch(err){
-        res.send('** Login/Signup **');
+        res.status(404).send('** Login/Signup **');
         next();
     }
 }

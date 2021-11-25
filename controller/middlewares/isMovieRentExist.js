@@ -4,7 +4,7 @@ exports.isMovieRentExist = async (req, res, next) =>{
     let movieName = req.body.name;
     let user_id = req.user.email;
     if(movieName === undefined){
-        return res.send("Please provide the movie name.");
+        return res.status(400).send("Please provide the movie name.");
     }
 
     try{ 
