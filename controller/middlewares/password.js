@@ -22,9 +22,9 @@ exports.comparePass = async (req, res, next) =>{
         isPasswordValid = await bcrypt.compare(req.body.password, dbPassword);
         req.validPassword = isPasswordValid;
         next();
+        
     }catch(err){
         req.validPassword = 'noUser';
-        // res.send({status: "User not exist.", message: "Create Account (signUp)"});
         next();
     }
 }

@@ -1,5 +1,6 @@
 const {all_movies, add_movie, search_movie_by_genre, filter_by_release_date, update_movie, delete_movie} = require('../controller/movies.controller');
 const {user_auth_for_movie, auth_for_users} = require('../controller/middlewares/user_auth');
+const {movieValidation} = require('../controller/utils/schemaValidation');
 
 const express = require('express');
 const router = express.Router();
@@ -8,7 +9,7 @@ const router = express.Router();
 router.get('/all-movies', all_movies);
 
 // add a new movie
-router.post('/add-movie', user_auth_for_movie, add_movie);
+router.post('/add-movie', movieValidation, user_auth_for_movie, add_movie);
 
 // search movie with a genere
 router.get('/filter/:genre', search_movie_by_genre);
@@ -17,7 +18,7 @@ router.get('/filter/:genre', search_movie_by_genre);
 router.get('/filter-release-date', filter_by_release_date);
 
 // update movie details
-router.put('/update-movie', user_auth_for_movie, update_movie);
+router.put('/update-movie', movieValidation, user_auth_for_movie, update_movie);
 
 //delete a movie
 router.delete('/delete-movie/:name', auth_for_users, delete_movie);

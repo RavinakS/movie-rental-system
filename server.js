@@ -2,6 +2,8 @@ require('dotenv').config();
 require('./model/dbConnection.model');
 const express = require('express');
 const app = express();
+const logger = require('morgan');
+app.use(logger('dev'));
 app.use(express.json())
 
 const users = require('./routes/users.routes');

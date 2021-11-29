@@ -1,4 +1,4 @@
-const { rents } = require('../model/dbSchema.model');
+const { rents } = require('../model/rentSchema.model');
 
 exports.addRent = (movie_rent_data) =>{
     return rents.create(movie_rent_data);

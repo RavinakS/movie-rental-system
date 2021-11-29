@@ -1,4 +1,4 @@
-const { users } = require('../model/dbSchema.model');
+const { users } = require('../model/userSchema.model');
 
 exports.signUp = (userData) =>{
     return users.create(userData);

@@ -1,4 +1,3 @@
-const { movieValidation } = require('./utils/schemaValidation');
 const {allMovies, addMovie, searchMovieByGenre, filterByReleaseDate, updateMovie, deleteMovie} = require('../services/movies.services');
 
 // Home Page
@@ -48,23 +47,13 @@ exports.all_movies = async (req, res) =>{
 
 //Adding a movie to in App
 exports.add_movie = async (req, res) =>{
-
-    //checking user role through middleware
     movieDetails = req.admin;
 
-    //validate movie details
-    validated = await movieValidation.validate(movieDetails);
-    if(validated.error){
-        return res.status(400).send({status_code: 400, error: validated.error.details[0].message});
-    }
-
-    // add movie Info in DB
     try{
         added = await addMovie(movieDetails);
         res.status(201).send({status_code: 201, message: "Movie has been added."});
     }catch(err){
         if(err.name === "MongoServerError" && err.code === 11000){ 
-            console.log({error: err.code, Status: "This movie is already exist.", message: "Use search-bar to get the movie."});
             return res.status(500).send({status_code: 500, Status: "This movie is already exist.", message: "Use search-bar to get the movie."});
         }
         return res.send(err);
@@ -73,16 +62,8 @@ exports.add_movie = async (req, res) =>{
 }
 
 exports.update_movie = async (req, res) =>{
-    //checking user role through middleware
     movieDetails = req.admin;
 
-    //validate movie details
-    validated = await movieValidation.validate(movieDetails);
-    if(validated.error){
-        return res.status(400).send({status_code: 400, error: validated.error.details[0].message});
-    }
-
-    // Updating the movie details
     try{
         update = await updateMovie(req.body.name, movieDetails);
         if(update.matchedCount===0){
