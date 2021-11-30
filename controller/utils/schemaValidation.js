@@ -12,7 +12,6 @@ exports.userValidation = async (req, res, next) =>{
     validated = await schema.validate(req.body);
     if(validated.error){
         res.status(400).send({status_code: 400, error: validated.error.details[0].message});
-        next()
     }else{
         req.validated = true;
         next()
@@ -30,7 +29,6 @@ exports.movieValidation = async (req, res, next) =>{
     let validated = await schema.validate(req.body);
     if(validated.error){
         res.status(400).send({status_code: 400, error: validated.error.details[0].message});
-        next()
     }else{
         req.validated = true;
         next()

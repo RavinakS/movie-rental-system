@@ -5,8 +5,8 @@ const Model = db.model;
 
 // table for all the rents
 const rentsTableSchema = new Schema({
-    user: {type: String},
-    name: {type: String},
+    user: {type: String, trim: true, lowercase: true, required: true},
+    name: {type: String, required: true, trim: true},
     releasDate: {type: Date},
     genre: {type: String},
     avalCD: {type: Number}

@@ -8,7 +8,7 @@ const {userValidation} = require('../controller/utils/schemaValidation')
 
 router.post('/create-account', userValidation, hashPass, sign_up);
 
-router.get('/login', comparePass, login);
+router.post('/login', comparePass, login);
 
 router.get('/view-profile', user_profile);
 

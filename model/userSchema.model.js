@@ -5,10 +5,10 @@ const Model = db.model;
 
 //users information table
 const usersTableSchema = new Schema({
-    name: {type: String},
-    email: {type: String, unique: true, dropDups: true},
-    password: {type: String},
-    role: {type: String, default: 'Viewer'},
+    name: {type: String, required: true, minlength: 3, maxlength: 20, trim: true},
+    email: {type: String, unique: true, dropDups: true, trim: true, lowercase: true, required: true},
+    password: {type: String, required: true},
+    role: {type: String, default: 'user', trim: true},
     rent: {type: Number, default: 0}
 });
 
