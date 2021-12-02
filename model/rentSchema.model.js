@@ -7,7 +7,7 @@ const Model = db.model;
 const rentsTableSchema = new Schema({
     user: {type: String, trim: true, lowercase: true, required: true},
     name: {type: String, required: true, trim: true},
-    releasDate: {type: Date},
+    releasDate: {type: Date, },
     genre: {type: String},
     avalCD: {type: Number}
 })

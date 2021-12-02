@@ -17,5 +17,5 @@ exports.updateUserRent = (user, rents) =>{
 }
 
 exports.allUsersData = () =>{
-    return users.find();
+    return users.find({}, {password:0, __v:0});
 }

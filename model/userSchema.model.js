@@ -12,4 +12,5 @@ const usersTableSchema = new Schema({
     rent: {type: Number, default: 0}
 });
 
+
 exports.users = Model('users', usersTableSchema);
